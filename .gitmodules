@@ -1,0 +1,6 @@
+[submodule "vendor/h2o"]
+	path = vendor/h2o
+	url = git@github.com:h2o/h2o.git
+[submodule "vendor/wrk"]
+	path = vendor/wrk
+	url = git@github.com:wg/wrk.git
