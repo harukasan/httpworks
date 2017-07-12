@@ -115,6 +115,20 @@ Requests/sec:  11418.67
 Transfer/sec:     13.76MB
 ```
 
+#### Go proxy
+
+```
+$ ./local/bin/wrk -c 10 https://localhost:10443/1k
+Running 10s test @ https://localhost:10443/1k
+  2 threads and 10 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency     4.01ms    3.61ms  30.90ms   76.06%
+    Req/Sec     1.46k   157.82     1.92k    67.50%
+  29092 requests in 10.01s, 34.82MB read
+Requests/sec:   2905.23
+Transfer/sec:      3.48MB
+```
+
 ### HTTP/2
 
 (TODO)

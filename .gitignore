@@ -1,2 +1,5 @@
 local/
-src/
+src/nginx
+src/h2o
+src/pcre-*
+src/go-proxy/go-proxy
