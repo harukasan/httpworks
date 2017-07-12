@@ -122,11 +122,11 @@ $ ./local/bin/wrk -c 10 https://localhost:10443/1k
 Running 10s test @ https://localhost:10443/1k
   2 threads and 10 connections
   Thread Stats   Avg      Stdev     Max   +/- Stdev
-    Latency     4.01ms    3.61ms  30.90ms   76.06%
-    Req/Sec     1.46k   157.82     1.92k    67.50%
-  29092 requests in 10.01s, 34.82MB read
-Requests/sec:   2905.23
-Transfer/sec:      3.48MB
+    Latency   590.55us    0.94ms  21.70ms   92.95%
+    Req/Sec    12.45k   784.12    13.90k    78.50%
+  247960 requests in 10.01s, 296.77MB read
+Requests/sec:  24763.61
+Transfer/sec:     29.64MB
 ```
 
 ### HTTP/2

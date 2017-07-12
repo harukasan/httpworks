@@ -9,7 +9,30 @@ import (
 	"net/http"
 	"net/http/httputil"
 	"net/url"
+	"sync"
 )
+
+type pool struct {
+	sync.Pool
+}
+
+func (p pool) Get() []byte {
+	return p.Pool.Get().([]byte)
+}
+
+func (p pool) Put(b []byte) {
+	p.Pool.Put(b)
+}
+
+func newPool() *pool {
+	return &pool{
+		Pool: sync.Pool{
+			New: func() interface{} {
+				return make([]byte, 4*1024)
+			},
+		},
+	}
+}
 
 func main() {
 	var urlstr string
@@ -17,9 +40,11 @@ func main() {
 	var cert string
 	var key string
 	var caCertFile string
+	var usetls bool
 
 	flag.StringVar(&urlstr, "url", "", "target url")
-	flag.StringVar(&addr, "addr", "", "server address")
+	flag.StringVar(&addr, "addr", "", "http server address")
+	flag.BoolVar(&usetls, "tls", false, "use tls")
 	flag.StringVar(&cert, "cert", "", "certificate file")
 	flag.StringVar(&caCertFile, "ca-cert", "", "ca certificate file")
 	flag.StringVar(&key, "key", "", "certificate key file")
@@ -48,6 +73,13 @@ func main() {
 	}
 
 	proxy := httputil.NewSingleHostReverseProxy(u)
+	proxy.BufferPool = newPool()
 	proxy.Transport = http.DefaultTransport
-	log.Fatalf("serve: %v", http.ListenAndServeTLS(addr, cert, key, proxy))
+	proxy.Transport.(*http.Transport).MaxIdleConnsPerHost = 100
+
+	if usetls {
+		log.Fatalf("serve: %v", http.ListenAndServeTLS(addr, cert, key, proxy))
+	} else {
+		log.Fatalf("serve: %v", http.ListenAndServe(addr, proxy))
+	}
 }
